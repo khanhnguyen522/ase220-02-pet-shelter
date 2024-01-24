@@ -1,9 +1,10 @@
-### team member: 
-- khanh nguyen
+# ASE220-02-pets-shelter
+### Team Members: 
+- Khanh Nguyen
 - Bhuwan Bhandari
 - Rajani Khatri
 ### Contributions 
-- Khan Nguyen : MainPage.html
+- Khanh Nguyen : MainPage.html
 - Rajani Khatri, Bhuwan Bhandari: DetailedPage.html
 
 

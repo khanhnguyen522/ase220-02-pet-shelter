@@ -33,18 +33,14 @@
       <div class="container my-5">
         <div class="row justify-content-evenly">
           <div class="col-lg-4 col-md-5 col-xs-9 my-3">
-            <img
-              id="pet-image"
-              class="card-img-top w-100 rounded-4"
-              alt="image"
-            />
+            <img id="pet-image" class="card-img-top w-100 rounded-4" />
           </div>
           <div class="col-md-6 col-xs-9 my-3">
             <ul class="list-unstyled">
               <li><strong>Name:</strong> <span id="pet-name"></span></li>
               <li><strong>Type:</strong> <span id="pet-type"></span></li>
               <li><strong>Breed:</strong> <span id="pet-breed"></span></li>
-              <li><strong>Sex:</strong><span id="pet-gender"></span></li>
+              <li><strong>Sex:</strong> <span id="pet-gender"></span></li>
               <li><strong>Color:</strong> <span id="pet-color"></span></li>
               <li>
                 <strong>Spayed/ Neutered:</strong> <span id="pet-spayed"></span>
@@ -75,26 +71,28 @@
     <script>
       let id = getQueryParam("id");
       if (id === null) window.location.href = "index.html";
-      else displayPetDetails(id);
+      else displayPetInfo(id);
 
       function getQueryParam(key) {
         let queryParams = new URLSearchParams(window.location.search);
         return queryParams.has(key) ? queryParams.get(key) : null;
       }
 
-      function displayPetDetails(id) {
+      function displayPetInfo(id) {
         let pet = pets.find((p) => p.id === id);
         document.getElementById("pet-image").src = pet.avatar;
-        document.getElementById("pet-name").innerHTML = pet.name;
-        document.getElementById("pet-type").innerHTML = pet.type;
-        document.getElementById("pet-breed").innerHTML = pet.breed;
-        document.getElementById("pet-gender").innerHTML = pet.gender;
-        document.getElementById("pet-color").innerHTML = pet.color;
-        document.getElementById("pet-spayed").innerHTML = pet.spay;
-        document.getElementById("pet-age").innerHTML = pet.age;
-        document.getElementById("pet-id").innerHTML = pet.id;
-        document.getElementById("pet-chip-number").innerHTML = pet.chip;
-        document.getElementById("pet-description").innerHTML = pet.description;
+        document.getElementById("pet-image").alt = pet.name;
+        document.getElementById("pet-name").textContent = pet.name;
+        document.getElementById("pet-type").textContent = pet.type;
+        document.getElementById("pet-breed").textContent = pet.breed;
+        document.getElementById("pet-gender").textContent = pet.gender;
+        document.getElementById("pet-color").textContent = pet.color;
+        document.getElementById("pet-spayed").textContent = pet.spay;
+        document.getElementById("pet-age").textContent = pet.age;
+        document.getElementById("pet-id").textContent = pet.id;
+        document.getElementById("pet-chip-number").textContent = pet.chip;
+        document.getElementById("pet-description").textContent =
+          pet.description;
       }
     </script>
   </body>

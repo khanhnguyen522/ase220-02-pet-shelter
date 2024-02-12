@@ -41,10 +41,10 @@
         <div id="actions" class="d-flex justify-content-center my-4"></div>
       </div>
 
-      <!-- pop-up modal -->
+      <!-- Info Modal -->
       <div
         class="modal fade"
-        id="modal"
+        id="info_modal"
         data-bs-backdrop="static"
         data-bs-keyboard="false"
         tabindex="-1"
@@ -105,6 +105,144 @@
           </div>
         </div>
       </div>
+
+      <!--Update Modal -->
+      <div
+        class="modal fade"
+        id="update_modal"
+        data-bs-backdrop="static"
+        data-bs-keyboard="false"
+        tabindex="-1"
+        aria-labelledby="staticBackdropLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="staticBackdropLabel">
+                Update Pet
+              </h1>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <img id="pet-img" src="" class="card-img-top" alt="beagle" />
+              <div class="card-body d-flex flex-column">
+                <form>
+                  <div class="mb-3">
+                    <label for="formFile" class="form-label">Pet Image</label>
+                    <input type="file" class="form-control" id="imageFile" />
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="inputName" class="form-label">Name</label>
+                    <input type="text" class="form-control" id="inputName" />
+                  </div>
+                  <div class="mb-3">
+                    <label for="inputType" class="form-label">Type</label>
+                    <input type="text" class="form-control" id="inputType" />
+                  </div>
+                  <div class="mb-3">
+                    <label for="inputBreed" class="form-label">Breed</label>
+                    <input type="text" class="form-control" id="inputBreed" />
+                  </div>
+                  <div class="mb-3 d-flex gap-2">
+                    <label for="sex" class="col-form-label">Sex:</label>
+                    <div class="d-flex align-items-center gap-4">
+                      <div class="form-check gap-2">
+                        <input
+                          type="radio"
+                          class="form-check-input"
+                          name="sexGroup"
+                          id="sex1"
+                        />
+                        <label for="sex1" class="form-check-label">Male</label>
+                      </div>
+                      <div class="form-check gap-2">
+                        <input
+                          type="radio"
+                          class="form-check-input"
+                          name="sexGroup"
+                          id="sex2"
+                        />
+                        <label for="sex2" class="form-check-label"
+                          >Female</label
+                        >
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="inputColor" class="form-label">Color</label>
+                    <input type="text" class="form-control" id="inputColor" />
+                  </div>
+                  <div class="mb-3 d-flex gap-2">
+                    <label for="spay" class="col-form-label"
+                      >Spayed/Neutered:</label
+                    >
+                    <div class="d-flex align-items-center gap-4">
+                      <div class="form-check gap-2">
+                        <input
+                          type="radio"
+                          class="form-check-input"
+                          name="spayGroup"
+                          id="spay1"
+                        />
+                        <label for="spay1" class="form-check-label">Yes</label>
+                      </div>
+                      <div class="form-check gap-2">
+                        <input
+                          type="radio"
+                          class="form-check-input"
+                          name="spayGroup"
+                          id="spay2"
+                        />
+                        <label for="spay2" class="form-check-label">No</label>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="inputAge" class="form-label">Age</label>
+                    <input type="text" class="form-control" id="inputAge" />
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="inputChip" class="form-label"
+                      >Microchip Number</label
+                    >
+                    <input type="text" class="form-control" id="inputChip" />
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="inputDescription" class="form-label"
+                      >Description</label
+                    >
+                    <textarea
+                      class="form-control"
+                      id="inputDescription"
+                      rows="3"
+                    ></textarea>
+                  </div>
+                </form>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Reset
+              </button>
+              <button type="button" class="btn btn-primary">Update</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <script>
       function generateCard(pet) {
@@ -121,8 +259,8 @@
                 <div class="d-flex justify-content-between">
                  <div class="d-flex"> <h5  class="card-title fw-bold">${pet.name}</h5>
                   ${gender}</div>
-                  <div data-bs-toggle="modal" data-bs-target="#modal">
-                    <i class="bi bi-info-circle-fill fs-4"></i>
+              <div data-bs-toggle="modal" data-bs-target="#info_modal">
+                    <i class="bi bi-info-circle-fill fs-4 btn p-0"></i>
                   </div>
                 </div>
                 <ul class="list-unstyled">
@@ -130,16 +268,13 @@
                   <li><strong>Color:</strong> ${pet.color}</li>
                   <li id="id"><strong>ID:</strong> ${pet.id}</li>
                 </ul>
-                
-              
-               
               </div>
               <div class="d-flex justify-content-end gap-2 m-3">
-                <a
+                <a data-bs-toggle="modal" data-bs-target="#update_modal"
                 class="btn btn-success">
-                Update</a>
+                <i class="bi bi-pencil-square"></i></a>
                  <a
-                class="btn btn-success d-flex align-items-center">
+                class="btn btn-danger d-flex align-items-center">
                 <i class="bi bi-trash3-fill "></i></a>
                 
              
@@ -203,18 +338,56 @@
             });
             document.querySelector("#actions").append(loadMoreButton);
 
-            // listen to event when click card
+            // listen to event when click info icon----------------------
             document
-              .getElementById("modal")
+              .getElementById("info_modal")
               .addEventListener("show.bs.modal", function (event) {
                 const modalDoc = event.relatedTarget;
-                console.log(modalDoc.parentNode.parentNode);
-                const id = modalDoc.querySelector('li[id="id"]');
+
+                const id =
+                  modalDoc.parentNode.parentNode.querySelector(
+                    'ul li[id="id"]'
+                  );
+
                 const pet = getPetsById(id.innerText.split(" ")[1]);
-                populateModal(pet);
+                populateInfoModal(pet);
               });
 
-            function populateModal(pet) {
+            // listen to event when click UPDATE icon----------------------
+            document
+              .getElementById("update_modal")
+              .addEventListener("show.bs.modal", function (event) {
+                const modalDoc = event.relatedTarget;
+
+                const id =
+                  modalDoc.parentNode.parentNode.querySelector(
+                    'ul li[id="id"]'
+                  );
+
+                const pet = getPetsById(id.innerText.split(" ")[1]);
+                populateUpdateModal(pet);
+              });
+
+            function populateUpdateModal(pet) {
+              document.getElementById("inputName").value = pet.name;
+              document.getElementById("inputType").value = pet.type;
+              document.getElementById("inputBreed").value = pet.breed;
+              document.getElementById("inputColor").value = pet.color;
+              document.getElementById("inputAge").value = pet.age;
+              document.getElementById("inputChip").value = pet.chip;
+              document.getElementById("spay1").checked =
+                pet.spay === "Yes" ? true : false;
+              document.getElementById("spay2").checked =
+                pet.spay === "No" ? true : false;
+              document.getElementById("sex1").checked =
+                pet.gender === "Male" ? true : false;
+              document.getElementById("sex2").checked =
+                pet.gender === "Female" ? true : false;
+              document.getElementById("inputDescription").value =
+                pet.description;
+            }
+
+            function populateInfoModal(pet) {
               document.getElementById("pet-type").textContent = pet.type;
               document.getElementById("pet-breed").textContent = pet.breed;
               document.getElementById("pet-color").textContent = pet.type;

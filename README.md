@@ -1,4 +1,4 @@
-# ASE220-02-pets-shelter
+# ASE220-pets-shelter
 
 A front-end application aimed at efficiently managing the pets in a pet shelter.
 
@@ -10,9 +10,28 @@ A front-end application aimed at efficiently managing the pets in a pet shelter.
 
 ### Contributions:
 
-- Khanh Nguyen: MainPage.html
-- Rajani Khatri, Bhuwan Bhandari: Baxter.html, Luna.html, Sandy.html
+- Khanh Nguyen: Fetched data from data.json and implemented modal for the index page
+- Bhuwan Bhandari: Implemented pagination for the index page
+- Rajani Khatri: Created data.json and implemented pagination for the index page
 
 ### Project Structure:
 
-Our project consists of a main page (MainPage.html) and detailed pages for individual pets. During our discussion with professor Caporusso, he advised us to create detailed pages for only three pets. As a result, we have created Baxter.html, Luna.html, and Sandy.html as detailed pages for the first three pets. For the remaining seven pets, we have implemented a navigation system where the links lead to the detailed page of Baxter.html.
+The project has been restructured with two folders: assets and pages.
+
+- assets: Contains images and data.json.
+- pages: Contains index.html and detail.html.
+
+ index.html:
+  + Displays 30 pet cards.
+  + Utilizes JavaScript to dynamically generate cards based on data from data.json.
+  + Each card triggers a modal when clicked, displaying more details about the pet.
+  + The modal includes a button to navigate to the pet's detail page.
+  + Implements pagination for the index page.
+    
+detail.html:
+  + Presents detailed information about each pet.
+  + Retrieves and displays data based on the unique parameters from the link in the index page.
+  + Fetches data from data.json.
+    
+data.json:
+  + Contains an array of 30 pet objects.

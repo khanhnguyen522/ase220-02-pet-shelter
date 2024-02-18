@@ -1,4 +1,4 @@
-var pets = [
+var allPets = [
   {
     id: "34621",
     name: "Baxter",

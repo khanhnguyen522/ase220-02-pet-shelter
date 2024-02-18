@@ -225,16 +225,8 @@
               </div>
             </div>
             <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-bs-dismiss="modal"
-                id="edit-reset"
-              >
-                Reset
-              </button>
               <button type="button" id="edit-submit" class="btn btn-success">
-                Update
+                Save changes
               </button>
             </div>
           </div>
@@ -253,13 +245,23 @@
     ></script>
     <script src="../assets/data.js"></script>
     <script>
-      pets = pets.reverse();
+      //take pets array from local storage or create new one
+      let pets = [];
+      localPets = localStorage.getItem("pets");
+      if (localPets == null) {
+        localStorage.setItem("pets", JSON.stringify(allPets));
+        pets = allPets;
+      } else {
+        pets = JSON.parse(localPets);
+        console.log(pets);
+      }
+
       var offset = 0;
       var rpp = 9;
       var pages = 0;
       var editingPetId = -1;
 
-      //PAGE BASED PAGINATION-------------------------------------------------------
+      //PAGE BASED PAGINATION
       displayCards(pets);
       displayPageBasedPagination(pets);
 
@@ -415,6 +417,7 @@
           const editingPet = getPetsById(editingPetId);
           var updatedPet = {
             id: editingPet.id,
+            avatar: editingPet.avatar,
             name: $("#inputName").val() || editingPet.name,
             type: $("#inputType").val() || editingPet.type,
             breed: $("#inputBreed").val() || editingPet.breed,
@@ -429,7 +432,14 @@
             chip: $("#inputChip").val() || editingPet.chip,
             description: $("#inputDescription").val() || editingPet.description,
           };
-
+          //update UI depend on new pets array stored in local storage
+          const index = pets.findIndex((pet) => pet.id === editingPetId);
+          if (index !== -1) {
+            pets[index] = updatedPet;
+            localStorage.setItem("pets", JSON.stringify(pets));
+            $("#pets-container").empty();
+            displayCards(pets);
+          }
           $("#update_modal").modal("hide");
         });
       });

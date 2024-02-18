@@ -67,7 +67,7 @@
         </div>
       </div>
     </div>
-    <script src="data.js"></script>
+    <script src="../assets/data.js"></script>
     <script>
       let id = getQueryParam("id");
       if (id === null) window.location.href = "index.html";
@@ -79,28 +79,20 @@
       }
 
       function displayPetInfo(id) {
-        fetch("../assets/data.json")
-          .then((response) => response.json())
-          .then((pets) => {
-            let pet = pets.find((p) => p.id === id);
-            document.getElementById("pet-image").src = pet.avatar;
-            document.getElementById("pet-image").alt = pet.name;
-            document.getElementById("pet-name").textContent = pet.name;
-            document.getElementById("pet-type").textContent = pet.type;
-            document.getElementById("pet-breed").textContent = pet.breed;
-            document.getElementById("pet-gender").textContent = pet.gender;
-            document.getElementById("pet-color").textContent = pet.color;
-            document.getElementById("pet-spayed").textContent = pet.spay;
-            document.getElementById("pet-age").textContent = pet.age;
-            document.getElementById("pet-id").textContent = pet.id;
-            document.getElementById("pet-chip-number").textContent = pet.chip;
-            document.getElementById("pet-description").textContent =
-              pet.description;
-          })
-          .catch((error) => {
-            console.error("Error fetching data:", error);
-          });
         let pet = pets.find((p) => p.id === id);
+        document.getElementById("pet-image").src = pet.avatar;
+        document.getElementById("pet-image").alt = pet.name;
+        document.getElementById("pet-name").textContent = pet.name;
+        document.getElementById("pet-type").textContent = pet.type;
+        document.getElementById("pet-breed").textContent = pet.breed;
+        document.getElementById("pet-gender").textContent = pet.gender;
+        document.getElementById("pet-color").textContent = pet.color;
+        document.getElementById("pet-spayed").textContent = pet.spay;
+        document.getElementById("pet-age").textContent = pet.age;
+        document.getElementById("pet-id").textContent = pet.id;
+        document.getElementById("pet-chip-number").textContent = pet.chip;
+        document.getElementById("pet-description").textContent =
+          pet.description;
       }
     </script>
   </body>

@@ -37,11 +37,11 @@
           class="row row-cols-1 row-cols-sm-2 row-cols-lg-3"
         ></div>
 
-        <!-- pagination -->
+        <!-- PAGINATION -------------------------------------------------------------------->
         <div id="actions" class="d-flex justify-content-center my-4"></div>
       </div>
 
-      <!-- Information Modal -->
+      <!-- INFORMATION MODAL --------------------------------------------------------------->
       <div
         class="modal fade"
         id="info_modal"
@@ -106,7 +106,7 @@
         </div>
       </div>
 
-      <!--Update Modal -->
+      <!--UPDATE MODAL ------------------------------------------------------->
       <div
         class="modal fade"
         id="update_modal"
@@ -152,18 +152,18 @@
                           type="radio"
                           class="form-check-input"
                           name="sexGroup"
-                          id="sex1"
+                          id="Male"
                         />
-                        <label for="sex1" class="form-check-label">Male</label>
+                        <label for="Male" class="form-check-label">Male</label>
                       </div>
                       <div class="form-check gap-2">
                         <input
                           type="radio"
                           class="form-check-input"
                           name="sexGroup"
-                          id="sex2"
+                          id="Female"
                         />
-                        <label for="sex2" class="form-check-label"
+                        <label for="Female" class="form-check-label"
                           >Female</label
                         >
                       </div>
@@ -183,18 +183,18 @@
                           type="radio"
                           class="form-check-input"
                           name="spayGroup"
-                          id="spay1"
+                          id="Yes"
                         />
-                        <label for="spay1" class="form-check-label">Yes</label>
+                        <label for="Yes" class="form-check-label">Yes</label>
                       </div>
                       <div class="form-check gap-2">
                         <input
                           type="radio"
                           class="form-check-input"
                           name="spayGroup"
-                          id="spay2"
+                          id="No"
                         />
-                        <label for="spay2" class="form-check-label">No</label>
+                        <label for="No" class="form-check-label">No</label>
                       </div>
                     </div>
                   </div>
@@ -229,33 +229,39 @@
                 type="button"
                 class="btn btn-secondary"
                 data-bs-dismiss="modal"
+                id="edit-reset"
               >
                 Reset
               </button>
-              <button type="button" class="btn btn-success">Update</button>
+              <button type="button" id="edit-submit" class="btn btn-success">
+                Update
+              </button>
             </div>
           </div>
         </div>
       </div>
     </div>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.js"
+      integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+      crossorigin="anonymous"
+    ></script>
+    <script src="../assets/data.js"></script>
     <script>
+      pets = pets.reverse();
       var offset = 0;
       var rpp = 9;
       var pages = 0;
-      var allPets = [];
-      var curPetId = -1;
+      var editingPetId = -1;
 
-      fetch("../assets/data.json")
-        .then((response) => response.json())
-        .then((pets) => {
-          allPets = pets;
-          //page based pagination
-          displayCards(pets);
-          displayPageBasedPagination(pets);
-        })
-        .catch((error) => {
-          console.error(error);
-        });
+      //PAGE BASED PAGINATION-------------------------------------------------------
+      displayCards(pets);
+      displayPageBasedPagination(pets);
 
       function displayPageBasedPagination(pets) {
         rpp = 9;
@@ -318,7 +324,7 @@
                 </div>
                 <div class="d-flex justify-content-end gap-2 m-3">
                   <a data-bs-toggle="modal" data-bs-target="#update_modal"
-                  class="btn btn-success">
+                  class="btn btn-success" id="btn-edit">
                   <i class="bi bi-pencil-square"></i></a>
                    <a
                   class="btn btn-danger d-flex align-items-center">
@@ -344,13 +350,13 @@
         document.getElementById("inputColor").value = pet.color;
         document.getElementById("inputAge").value = pet.age;
         document.getElementById("inputChip").value = pet.chip;
-        document.getElementById("spay1").checked =
+        document.getElementById("Yes").checked =
           pet.spay === "Yes" ? true : false;
-        document.getElementById("spay2").checked =
+        document.getElementById("No").checked =
           pet.spay === "No" ? true : false;
-        document.getElementById("sex1").checked =
+        document.getElementById("Male").checked =
           pet.gender === "Male" ? true : false;
-        document.getElementById("sex2").checked =
+        document.getElementById("Female").checked =
           pet.gender === "Female" ? true : false;
         document.getElementById("inputDescription").value = pet.description;
       }
@@ -373,10 +379,10 @@
       }
 
       function getPetsById(id) {
-        return allPets.find((pet) => pet.id === id);
+        return pets.find((pet) => pet.id === id);
       }
 
-      // listen to event when click info icon----------------------
+      // listen to event when click on  INFORMATION icon (vanilla js)
       document
         .getElementById("info_modal")
         .addEventListener("show.bs.modal", function (event) {
@@ -387,22 +393,46 @@
           populateInfoModal(pet);
         });
 
-      // listen to event when click UPDATE icon----------------------
-      document
-        .getElementById("update_modal")
-        .addEventListener("show.bs.modal", function (event) {
-          const modalDoc = event.relatedTarget;
-          const id =
-            modalDoc.parentNode.parentNode.querySelector('ul li[id="id"]');
-          curPetId = id;
-          const pet = getPetsById(id.innerText.split(" ")[1]);
-          populateUpdateModal(pet);
+      //listen to event when click on UPDATE icon (jquery)
+      $(() => {
+        //populate pet information as default value on edit modal
+        $(document).on("click", "#btn-edit", function () {
+          editPetIdText = $(this)
+            .parents()
+            .parents()
+            .eq(1)
+            .find("div")
+            .find("ul")
+            .find("li[id]")
+            .text();
+          editingPetId = editPetIdText.split(" ")[1];
+          const editingPet = getPetsById(editingPetId);
+          populateUpdateModal(editingPet);
         });
+
+        //update pet information when the edit form is submitted
+        $(document).on("click", "#edit-submit", function () {
+          const editingPet = getPetsById(editingPetId);
+          var updatedPet = {
+            id: editingPet.id,
+            name: $("#inputName").val() || editingPet.name,
+            type: $("#inputType").val() || editingPet.type,
+            breed: $("#inputBreed").val() || editingPet.breed,
+            gender:
+              $("input[name='sexGroup']:checked").attr("id") ||
+              editingPet.gender,
+            color: $("#inputColor").val() || editingPet.color,
+            spay:
+              $("input[name='spayGroup']:checked").attr("id") ||
+              editingPet.spay,
+            age: $("#inputAge").val() || editingPet.age,
+            chip: $("#inputChip").val() || editingPet.chip,
+            description: $("#inputDescription").val() || editingPet.description,
+          };
+
+          $("#update_modal").modal("hide");
+        });
+      });
     </script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-      crossorigin="anonymous"
-    ></script>
   </body>
 </html>

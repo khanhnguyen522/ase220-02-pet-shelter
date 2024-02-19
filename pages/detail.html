@@ -20,14 +20,14 @@
       style="--bs-bg-opacity: 0.5"
     >
       <div class="container-fluid">
-        <a class="navbar-brand fs-2 fw-semibold" href="../pages/index.html">
+        <a class="navbar-brand fs-2 fw-semibold" >
           Pet Shelter</a
         >
       </div>
     </nav>
 
     <div class="m-4 font-monospace">
-      <a id="back-arrow">
+      <a id="back-arrow" href="../pages/index.html">
         <img src="../assets/arrow.svg" alt="arrow" />
       </a>
       <div class="container my-5">
@@ -79,7 +79,6 @@
     ></script>
     <script>
       let pets = JSON.parse(localStorage.getItem("pets"));
-      console.log(pets);
       let id = getQueryParam("id");
       if (id === null) window.location.href = "index.html";
       else displayPetInfo(id);

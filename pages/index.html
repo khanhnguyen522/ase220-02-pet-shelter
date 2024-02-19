@@ -243,7 +243,11 @@
       integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
       crossorigin="anonymous"
     ></script>
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.min.js"
+      integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+      crossorigin="anonymous"
+    ></script>
     <script src="../assets/data.js"></script>
     <script>
       //take pets array from local storage or create new one
@@ -254,7 +258,6 @@
         pets = allPets;
       } else {
         pets = JSON.parse(localPets);
-        console.log(pets);
       }
 
       var offset = 0;
@@ -269,13 +272,14 @@
       function displayPageBasedPagination(pets) {
         rpp = 9;
         pages = Math.ceil(pets.length / rpp);
+        document.querySelector("#actions").innerHTML = "";
         for (let i = 0; i < pages; i++) {
           let loadMoreButton = document.createElement("button");
           loadMoreButton.setAttribute("data-page", i + 1);
           loadMoreButton.classList.add("btn");
           loadMoreButton.classList.add("page-btn");
 
-          if (i == 0) {
+          if (i * rpp === offset) {
             loadMoreButton.classList.add("btn-success");
             loadMoreButton.classList.add("disabled");
           } else {
@@ -337,13 +341,7 @@
           </div>`;
         return cardHTML;
       }
-      //Delete the pet
-      $(".btn-danger").on('click',function(){
-        let parentDiv = $(this).parent().parent().parent();
-        let parentId = parentDiv.attr('id');
-        console.log(parentId);
-        $("#"+`${parentId}`).css('display','none');
-      })
+
       function displayCards(pets) {
         for (let i = offset; i < Math.min(offset + rpp, pets.length); i++) {
           document.getElementById("pets-container").innerHTML += generateCard(
@@ -351,7 +349,6 @@
           );
         }
       }
-    
 
       function populateUpdateModal(pet) {
         document.getElementById("inputName").value = pet.name;
@@ -405,6 +402,22 @@
 
       //listen to event when click on UPDATE icon (jquery)
       $(() => {
+        //Delete the pet
+        $(document).on("click", ".btn-danger", function () {
+          let parentDiv = $(this).parent().parent().parent();
+          let parentId = parentDiv.attr("id");
+          const index = pets.findIndex((pet) => pet.id === parentId);
+          console.log(index);
+          if (index !== -1) {
+            pets.splice(index, 1);
+            console.log(pets);
+            localStorage.setItem("pets", JSON.stringify(pets));
+            $("#pets-container").empty();
+            displayCards(pets);
+            displayPageBasedPagination(pets);
+          }
+          // $("#" + `${parentId}`).css("display", "none");
+        });
         //populate pet information as default value on edit modal
         $(document).on("click", "#btn-edit", function () {
           editPetIdText = $(this)

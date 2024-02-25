@@ -32,6 +32,15 @@
 
     <div class="d-flex justify-content-center font-monospace">
       <div class="container text-cente m-5">
+        <div class="container text-end m-3">
+          <a
+            data-bs-toggle="modal"
+            data-bs-target="#add_modal"
+            class="btn btn-success"
+            id="btn-add"
+            >Add New Pet</a
+          >
+        </div>
         <div
           id="pets-container"
           class="row row-cols-1 row-cols-sm-2 row-cols-lg-3"
@@ -227,6 +236,154 @@
             <div class="modal-footer">
               <button type="button" id="edit-submit" class="btn btn-success">
                 Save changes
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--Add Modal-->
+      <div
+        class="modal fade"
+        id="add_modal"
+        data-bs-backdrop="static"
+        data-bs-keyboard="false"
+        tabindex="-1"
+        aria-labelledby="staticBackdropLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <!--Modal Header-->
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="staticBackdropLabel">Add Pet</h1>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <!--Modal Body-->
+            <div class="modal-body">
+              <div class="card-body d-flex flex-column">
+                <form>
+                  <div class="mb-3">
+                    <label for="formFile" class="form-label">Pet Image</label>
+                    <input type="file" class="form-control" id="petImageAdd" />
+                  </div>
+                  <div class="mb-3">
+                    <label for="inputName" class="form-label">Name</label>
+                    <input type="text" class="form-control" id="inputNameAdd" />
+                  </div>
+                  <div class="mb-3">
+                    <label for="inputType" class="form-label">Type</label>
+                    <input type="text" class="form-control" id="inputTypeAdd" />
+                  </div>
+                  <div class="mb-3">
+                    <label for="inputBreed" class="form-label">Breed</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="inputBreedAdd"
+                    />
+                  </div>
+                  <div class="mb-3 d-flex gap-2">
+                    <label for="sex" class="col-form-label">Sex:</label>
+                    <div class="d-flex align-items-center gap-4">
+                      <div class="form-check gap-2">
+                        <input
+                          type="radio"
+                          class="form-check-input"
+                          name="sexGroup"
+                          id="MaleAdd"
+                          text="Male"
+                        />
+                        <label for="Male" class="form-check-label">Male</label>
+                      </div>
+                      <div class="form-check gap-2">
+                        <input
+                          type="radio"
+                          class="form-check-input"
+                          name="sexGroup"
+                          id="FemaleAdd"
+                          text="Female"
+                        />
+                        <label for="Female" class="form-check-label"
+                          >Female</label
+                        >
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="inputColor" class="form-label">Color</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="inputColorAdd"
+                    />
+                  </div>
+                  <div class="mb-3 d-flex gap-2">
+                    <label for="spay" class="col-form-label"
+                      >Spayed/Neutered:</label
+                    >
+                    <div class="d-flex align-items-center gap-4">
+                      <div class="form-check gap-2">
+                        <input
+                          type="radio"
+                          class="form-check-input"
+                          name="spayGroup"
+                          id="YesAdd"
+                          text="Yes"
+                        />
+                        <label for="Yes" class="form-check-label">Yes</label>
+                      </div>
+                      <div class="form-check gap-2">
+                        <input
+                          type="radio"
+                          class="form-check-input"
+                          name="spayGroup"
+                          id="NoAdd"
+                          Text="No"
+                        />
+                        <label for="No" class="form-check-label">No</label>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="inputAge" class="form-label">Age</label>
+                    <input type="text" class="form-control" id="inputAgeAdd" />
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="inputAge" class="form-label">ID</label>
+                    <input type="text" class="form-control" id="idAdd" />
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="inputChip" class="form-label"
+                      >Microchip Number</label
+                    >
+                    <input type="text" class="form-control" id="inputChipAdd" />
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="inputDescription" class="form-label"
+                      >Description</label
+                    >
+                    <textarea
+                      class="form-control"
+                      id="inputDescriptionAdd"
+                      rows="3"
+                    ></textarea>
+                  </div>
+                </form>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" id="add-submit" class="btn btn-success">
+                Add Pet
               </button>
             </div>
           </div>
@@ -462,6 +619,45 @@
             displayCards(pets);
           }
           $("#update_modal").modal("hide");
+        });
+
+        //This is the section where add pet button is handled.
+        //upload the image file from the user and add it to the local storage
+        $("#petImageAdd").change(function (e) {
+          const file = e.target.files[0];
+          const reader = new FileReader();
+          reader.onload = function () {
+            imageDataUrl = reader.result;
+          };
+          reader.readAsDataURL(file);
+          const filePath = $("#petImageAdd").val().substring(12);
+          imageFile = `${"../assets/"}${filePath}`;
+          console.log(imageFile);
+        });
+
+        //When add pet button is clicked we add the new card to the pets-container.
+        $(document).on("click", "#add-submit", function () {
+          var addingPet = {
+            id: $("#idAdd").val(),
+            avatar: imageFile,
+            name: $("#inputNameAdd").val(),
+            type: $("#inputTypeAdd").val(),
+            breed: $("#inputBreedAdd").val(),
+            gender: $("input[name='sexGroup']:checked").attr("text"),
+            color: $("#inputColorAdd").val(),
+            spay: $("input[name='spayGroup']:checked").attr("text"),
+            age: $("#inputAgeAdd").val(),
+            chip: $("#inputChipAdd").val(),
+            description: $("#inputDescriptionAdd").val(),
+          };
+          //update UI depend on new pets array stored in local storage
+          //Using unshift method to add the new pet in index 0.
+          pets.unshift(addingPet);
+          localStorage.setItem("pets", JSON.stringify(pets));
+          $("#pets-container").empty();
+          displayCards(pets);
+          displayPageBasedPagination(pets);
+          $("#add_modal").modal("hide");
         });
       });
     </script>

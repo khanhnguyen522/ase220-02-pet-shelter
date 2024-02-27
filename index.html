@@ -275,7 +275,7 @@
               <div class="card-body d-flex flex-column">
                 <form>
                   <div class="mb-3">
-                    <label for="inputAvatar" class="form-label"
+                    <label for="inputImageAdd" class="form-label"
                       >Pet Image URL</label
                     >
                     <input
@@ -618,7 +618,7 @@
           const editingPet = getPetsById(editingPetId);
           var updatedPet = {
             id: editingPet.id,
-            name: $("#inputAvatar").val() || editingPet.avatar,
+            avatar: $("#inputAvatar").val() || editingPet.avatar,
             name: $("#inputName").val() || editingPet.name,
             type: $("#inputType").val() || editingPet.type,
             breed: $("#inputBreed").val() || editingPet.breed,
@@ -633,6 +633,7 @@
             chip: $("#inputChip").val() || editingPet.chip,
             description: $("#inputDescription").val() || editingPet.description,
           };
+          console.log(updatedPet);
 
           const index = pets.findIndex((pet) => pet.id === editingPetId);
           if (index !== -1) {

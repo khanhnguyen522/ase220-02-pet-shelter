@@ -624,7 +624,7 @@
             chip: $("#inputChip").val() || editingPet.chip,
             description: $("#inputDescription").val() || editingPet.description,
           };
-          //update UI depend on new pets array stored in local storage
+
           const index = pets.findIndex((pet) => pet.id === editingPetId);
           if (index !== -1) {
             pets[index] = updatedPet;

@@ -75,11 +75,21 @@
       integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
       crossorigin="anonymous"
     ></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
-      let pets = JSON.parse(localStorage.getItem("pets"));
-      let id = getQueryParam("id");
-      if (id === null) window.location.href = "index.html";
-      else displayPetInfo(id);
+      let pets = [];
+      const apiUrl = "https://jsonblob.com/api/1211825673089179648";
+      axios
+        .get(apiUrl, {})
+        .then(function (res) {
+          pets = res.data;
+          let id = getQueryParam("id");
+          if (id === null) window.location.href = "index.html";
+          else displayPetInfo(id);
+        })
+        .catch(function (err) {
+          console.log(err);
+        });
 
       function getQueryParam(key) {
         let queryParams = new URLSearchParams(window.location.search);

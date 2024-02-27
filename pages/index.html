@@ -269,8 +269,12 @@
               <div class="card-body d-flex flex-column">
                 <form>
                   <div class="mb-3">
-                    <label for="formFile" class="form-label">Pet Image</label>
-                    <input type="file" class="form-control" id="petImageAdd" />
+                    <label for="inputName" class="form-label">Pet Image</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="inputImageAdd"
+                    />
                   </div>
                   <div class="mb-3">
                     <label for="inputName" class="form-label">Name</label>
@@ -405,17 +409,21 @@
       integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
       crossorigin="anonymous"
     ></script>
-    <script src="../assets/data.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
-      //take pets array from local storage or create new one
       let pets = [];
-      localPets = localStorage.getItem("pets");
-      if (localPets == null) {
-        localStorage.setItem("pets", JSON.stringify(allPets));
-        pets = allPets;
-      } else {
-        pets = JSON.parse(localPets);
-      }
+      const apiUrl = "https://jsonblob.com/api/1211825673089179648";
+
+      axios
+        .get(apiUrl, {})
+        .then(function (res) {
+          pets = res.data;
+          displayCards(pets);
+          displayPageBasedPagination(pets);
+        })
+        .catch(function (err) {
+          console.log(err);
+        });
 
       var offset = 0;
       var rpp = 9;
@@ -423,9 +431,6 @@
       var editingPetId = -1;
 
       //PAGE BASED PAGINATION
-      displayCards(pets);
-      displayPageBasedPagination(pets);
-
       function displayPageBasedPagination(pets) {
         rpp = 9;
         pages = Math.ceil(pets.length / rpp);
@@ -546,6 +551,17 @@
         return pets.find((pet) => pet.id === id);
       }
 
+      function updatePets(updatedPets) {
+        return axios
+          .put(apiUrl, updatedPets)
+          .then(function (res) {
+            console.log("update successfully: ", res.data);
+          })
+          .catch(function (err) {
+            console.log(err);
+          });
+      }
+
       // listen to event when click on  INFORMATION icon (vanilla js)
       document
         .getElementById("info_modal")
@@ -557,7 +573,7 @@
           populateInfoModal(pet);
         });
 
-      //listen to event when click on UPDATE icon (jquery)
+      //jquery
       $(() => {
         //Delete the pet
         $(document).on("click", ".btn-danger", function () {
@@ -567,13 +583,11 @@
           console.log(index);
           if (index !== -1) {
             pets.splice(index, 1);
-            console.log(pets);
-            localStorage.setItem("pets", JSON.stringify(pets));
+            updatePets(pets);
             $("#pets-container").empty();
             displayCards(pets);
             displayPageBasedPagination(pets);
           }
-          // $("#" + `${parentId}`).css("display", "none");
         });
         //populate pet information as default value on edit modal
         $(document).on("click", "#btn-edit", function () {
@@ -614,32 +628,18 @@
           const index = pets.findIndex((pet) => pet.id === editingPetId);
           if (index !== -1) {
             pets[index] = updatedPet;
-            localStorage.setItem("pets", JSON.stringify(pets));
+            updatePets(pets);
             $("#pets-container").empty();
             displayCards(pets);
           }
           $("#update_modal").modal("hide");
         });
 
-        //This is the section where add pet button is handled.
-        //upload the image file from the user and add it to the local storage
-        $("#petImageAdd").change(function (e) {
-          const file = e.target.files[0];
-          const reader = new FileReader();
-          reader.onload = function () {
-            imageDataUrl = reader.result;
-          };
-          reader.readAsDataURL(file);
-          const filePath = $("#petImageAdd").val().substring(12);
-          imageFile = `${"../assets/"}${filePath}`;
-          console.log(imageFile);
-        });
-
         //When add pet button is clicked we add the new card to the pets-container.
         $(document).on("click", "#add-submit", function () {
           var addingPet = {
             id: $("#idAdd").val(),
-            avatar: imageFile,
+            avatar: $("#inputImageAdd").val(),
             name: $("#inputNameAdd").val(),
             type: $("#inputTypeAdd").val(),
             breed: $("#inputBreedAdd").val(),
@@ -650,10 +650,8 @@
             chip: $("#inputChipAdd").val(),
             description: $("#inputDescriptionAdd").val(),
           };
-          //update UI depend on new pets array stored in local storage
-          //Using unshift method to add the new pet in index 0.
-          pets.unshift(addingPet);
-          localStorage.setItem("pets", JSON.stringify(pets));
+          pets.push(addingPet);
+          updatePets(pets);
           $("#pets-container").empty();
           displayCards(pets);
           displayPageBasedPagination(pets);

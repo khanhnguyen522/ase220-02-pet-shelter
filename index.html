@@ -369,11 +369,6 @@
                   </div>
 
                   <div class="mb-3">
-                    <label for="inputAge" class="form-label">ID</label>
-                    <input type="text" class="form-control" id="idAdd" />
-                  </div>
-
-                  <div class="mb-3">
                     <label for="inputChip" class="form-label"
                       >Microchip Number</label
                     >
@@ -570,6 +565,14 @@
             console.log(err);
           });
       }
+      function generateRandomPetId() {
+        let id = Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000;
+        return id.toString();
+      }
+
+      function isUniqueId(id, pets) {
+        return !pets.some((pet) => pet.id === id);
+      }
 
       // listen to event when click on  INFORMATION icon (vanilla js)
       document
@@ -647,8 +650,13 @@
 
         //When add pet button is clicked we add the new card to the pets-container.
         $(document).on("click", "#add-submit", function () {
+          randomId = generateRandomPetId();
+          while (!isUniqueId(randomId, pets)) {
+            randomId = generateRandomPetId();
+          }
+          console.log(randomId);
           var addingPet = {
-            id: $("#idAdd").val(),
+            id: randomId,
             avatar: $("#inputImageAdd").val(),
             name: $("#inputNameAdd").val(),
             type: $("#inputTypeAdd").val(),
@@ -660,6 +668,7 @@
             chip: $("#inputChipAdd").val(),
             description: $("#inputDescriptionAdd").val(),
           };
+          console.log(addingPet);
           pets.push(addingPet);
           updatePets(pets);
           $("#pets-container").empty();

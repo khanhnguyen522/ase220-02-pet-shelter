@@ -1,0 +1,124 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+    <title>Pet Shelter</title>
+  </head>
+  <body>
+    <nav
+      class="nav-bar bg-success p-2 font-monospace"
+      style="--bs-bg-opacity: 0.5"
+    >
+      <div class="container-fluid">
+        <a class="navbar-brand fs-2 fw-semibold" >
+          Pet Shelter</a
+        >
+      </div>
+    </nav>
+
+    <div class="m-4 font-monospace">
+      <a id="back-arrow" href="../pages/index.html">
+        <img src="../assets/arrow.svg" alt="arrow" />
+      </a>
+      <div class="container my-5">
+        <div class="row justify-content-evenly">
+          <div class="col-lg-4 col-md-5 col-xs-9 my-3">
+            <img id="pet-image" class="card-img-top w-100 rounded-4" />
+          </div>
+          <div class="col-md-6 col-xs-9 my-3">
+            <ul class="list-unstyled">
+              <li><strong>Name:</strong> <span id="pet-name"></span></li>
+              <li><strong>Type:</strong> <span id="pet-type"></span></li>
+              <li><strong>Breed:</strong> <span id="pet-breed"></span></li>
+              <li><strong>Sex:</strong> <span id="pet-gender"></span></li>
+              <li><strong>Color:</strong> <span id="pet-color"></span></li>
+              <li>
+                <strong>Spayed/ Neutered:</strong> <span id="pet-spayed"></span>
+              </li>
+              <li><strong>Age:</strong> <span id="pet-age"></span></li>
+              <li><strong>Animal ID:</strong> <span id="pet-id"></span></li>
+              <li>
+                <strong>Microchip Number:</strong>
+                <span id="pet-chip-number"></span>
+              </li>
+              <li>
+                <strong>Status:</strong>
+                <ul>
+                  <li>Health checked</li>
+                  <li>Vaccinations up to date</li>
+                  <li>Regular dewormed</li>
+                  <li>Microchipped</li>
+                </ul>
+              </li>
+              <br />
+              <p id="pet-description"></p>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.js"
+      integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script>
+      //Added GET request to the jsonBlob. 
+       $(document).ready(function(){
+          $.getJSON("https://jsonblob.com/api/1211760330736001024", function(data ) {
+            pets = data;
+            console.log(pets);
+            let id = getQueryParam("id");
+            if (id === null) window.location.href = "index.html";
+            else displayPetInfo(id);
+
+            function getQueryParam(key) {
+              let queryParams = new URLSearchParams(window.location.search);
+              return queryParams.has(key) ? queryParams.get(key) : null;
+            }
+
+            function displayPetInfo(id) {
+              let pet = pets.find((p) => p.id === id);
+              document.getElementById("pet-image").src = pet.avatar;
+              document.getElementById("pet-image").alt = pet.name;
+              document.getElementById("pet-name").textContent = pet.name;
+              document.getElementById("pet-type").textContent = pet.type;
+              document.getElementById("pet-breed").textContent = pet.breed;
+              document.getElementById("pet-gender").textContent = pet.gender;
+              document.getElementById("pet-color").textContent = pet.color;
+              document.getElementById("pet-spayed").textContent = pet.spay;
+              document.getElementById("pet-age").textContent = pet.age;
+              document.getElementById("pet-id").textContent = pet.id;
+              document.getElementById("pet-chip-number").textContent = pet.chip;
+              document.getElementById("pet-description").textContent =
+                pet.description;
+            }
+            $(() => {
+              $(document).ready(function () {
+                $("#back-arrow").click(function (event) {
+                  event.preventDefault();
+                  window.location.href = "../pages/index.html";
+                });
+              });
+            });
+    });
+  });
+    </script>
+  </body>
+</html>
